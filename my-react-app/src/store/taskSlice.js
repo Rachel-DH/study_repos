@@ -3,31 +3,35 @@ const task={
     title:"",
     description: "",
     status:"To Do",
-    priority:"Medium",
-    dueDate:new Date(Date.now()+7*24*60*60*1000)
+    priority:2,
+    dueDate:new Date(Date.now()+7*24*60*60*1000).toLocaleDateString('he-IL')
 }
  
 const taskSlice=createSlice({
     name:"tasks",
-    initialState: [],
+    initialState: { list: [] },
     reducers:{
         create:(state, action)=>{
+            console.log("in create");
+            
           const {idProject,title,description,priority,dueDate}=action.payload
           const newTask={
-            id:Date.now(),
+            id:Date.now().toString(),
             idProject,
             title,
             description,
             status:"To Do",
-            priority: priority || "Medium",
-            dueDate:dueDate || new Date(Date.now()+7*24*60*60*1000)
+            priority: priority || 2,
+            dueDate:dueDate || new Date(Date.now()+7*24*60*60*1000).toLocaleDateString('he-IL')
           } 
-          state.push(newTask)
+          state.list.push(newTask)
+          console.log(newTask);
+          
         },
         update:(state,action)=>{
 
             const { id, title, description, priority, dueDate } = action.payload;
-            const currentTask=state.find(task=>task.id===id)
+            const currentTask=state.list.find(task=>task.id===id)
             
             if(currentTask){
                 currentTask.title=title || currentTask.title
@@ -38,10 +42,10 @@ const taskSlice=createSlice({
             }
         },
         remove:(state, action)=>{
-            return state.filter(task=>task.id!==action.payload)
+             state.list = state.list.filter(task=>task.id!==action.payload)
         },
         changeStatus:(state, action)=>{
-             const currentTask=state.find(task=>task.id===action.payload.id)
+             const currentTask=state.list.find(task=>task.id===action.payload.id)
              if(currentTask)
                 currentTask.status=action.payload.status 
         }

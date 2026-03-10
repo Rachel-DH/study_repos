@@ -19,7 +19,12 @@ export default function Login() {
     watch,
     control,
     formState: { errors },
-  } = useForm()
+  } = useForm({
+        defaultValues: {
+            username: "",
+            password: ""
+        }
+    })
  const toast = useRef(null);
  const userName=useSelector((state) => state.user.name);
  const password=useSelector((state) => state.user.password); 

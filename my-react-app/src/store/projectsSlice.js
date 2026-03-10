@@ -3,27 +3,28 @@ import { createSlice } from "@reduxjs/toolkit";
 const project = {
     name: "",
     description:"",
-    createDate:new Date()
+    createDate:""
 }
 
 const projectsSlice=createSlice({
     name:"projects",
-    initialState:[],
+    initialState:{ list: [] },
     reducers:{
         create:(state, action)=>{
             const{name, description, createDate}=action.payload
             const newProject={
-                id:Date.now(),
+                id:Date.now().toString(),
                 name,
                 description,
-                createDate:createDate || new Date()
+                createDate:createDate || new Date().toLocaleDateString('he-IL')
             }
-            state.push(newProject)
+            state.list.push(newProject)
+            
         },
         update:(state,action)=>{
 
             const {id,name, description} = action.payload;
-            const currentProject=state.find(project=>project.id===id)
+            const currentProject=state.list.find(project=>project.id===id)
             
             if(currentProject){
                 currentProject.name=name || currentProject.name
@@ -31,7 +32,7 @@ const projectsSlice=createSlice({
             }
         },
         remove:(state, action)=>{
-            return state.filter(project=>project.id!==action.payload)
+            state.list = state.list.filter(project=>project.id!==action.payload)
         },
     }
 })

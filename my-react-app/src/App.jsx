@@ -3,7 +3,9 @@ import { useSelector } from 'react-redux';
 import Home from './components/Home.jsx'; 
 import Login from './components/Login.jsx';
 import ProjectsList from './components/ProjectList.jsx';
-// import ProjectDetails from './components/ProjectDetails.jsx';
+import AddProject from './components/AddProject.jsx';
+import ProjectDetails from './components/ProjectDetails.jsx';
+import AddTask from './components/AddTask.jsx';
 
 function App() {
   const isConnected = useSelector((state) => state.user.isConnected);
@@ -13,8 +15,14 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/projects" element={isConnected ? <ProjectsList /> : <Navigate to="/" />} />
-        {/* <Route path="/project/:id" element={isConnected ? <ProjectDetails /> : <Navigate to="/" />} /> */}
+        {/* <Route path="/projects" element={isConnected ? <ProjectsList /> : <Navigate to="/" />} />
+        <Route path="/projects/add" element={isConnected ? <AddProject /> : <Navigate to="/" />} />
+        <Route path="/project/:id" element={isConnected ? <ProjectDetails /> : <Navigate to="/" />} /> */}
+        {/* <Route path="/project/:id/add-task" element={isConnected ? <AddTask /> : <Navigate to="/" />} /> */}
+        <Route path="/project/:id/add-task" element= {<AddTask /> } />
+        <Route path="/project/:id" element={<ProjectDetails />} />
+        <Route path="/projects/add" element={<AddProject />} />
+        <Route path="/projects" element={<ProjectsList />} />
       </Routes>
       </div>
     </BrowserRouter>
