@@ -1,6 +1,6 @@
-import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { Button } from 'primereact/button';
+import { useSelector } from 'react-redux';
 
 const Home = () => {
     const navigate = useNavigate();         

@@ -1,4 +1,4 @@
-import { useForm } from "react-hook-form"
+import { useForm, Controller } from "react-hook-form"
 import { FloatLabel } from 'primereact/floatlabel';
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
@@ -17,6 +17,7 @@ export default function Login() {
     register,
     handleSubmit,
     watch,
+    control,
     formState: { errors },
   } = useForm()
  const toast = useRef(null);
@@ -26,23 +27,24 @@ export default function Login() {
  const navigate = useNavigate();  
 
   const onSubmit = (data) => {
-    if(!(userName== "" || password=="")){
-        if (!(data.username === userName && data.password === String(password))) {
-           toast.current.show({
-                    severity: 'error', 
-                    summary: 'שגיאת התחברות', 
-                    detail: 'שם משתמש או סיסמה שגויים', 
-                    life: 3000
-                }); 
-            return;}}
-    else{
+    if(userName === "") {
         dispatch(updateName(data.username));
         dispatch(updatePassword(data.password));
+        dispatch(loginAction()); 
+        navigate('/projects');
+    } 
+    else if(data.username === userName && data.password === password) {
+        dispatch(loginAction()); 
+        navigate('/projects');
+    } 
+    else {
+        toast.current.show({
+            severity: 'error', 
+            summary: 'שגיאת התחברות', 
+            detail: 'שם משתמש או סיסמה שגויים', 
+            life: 3000
+        });
     }
-
-    dispatch(loginAction()); 
-    navigate('/projects');
-    console.log(watch("username"), watch("password"));
   }
 
   return (
@@ -66,13 +68,20 @@ export default function Login() {
         
         <div>
 <FloatLabel>
-    <Password 
-        id="password" 
-        {...register("password", { required: "חובה להזין סיסמה" })} 
-        toggleMask 
-        feedback={false} 
-        inputClassName="w-full"
-        className="w-full"
+    <Controller
+        name="password"
+        control={control}
+        rules={{ required: "חובה להזין סיסמה" }}
+        render={({ field }) => (
+            <Password 
+                {...field}
+                id="password" 
+                toggleMask 
+                feedback={false} 
+                inputClassName="w-full"
+                className="w-full"
+            />
+        )}
     />
     <label htmlFor="password">סיסמה</label>
 </FloatLabel>
