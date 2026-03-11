@@ -42,7 +42,13 @@ const ProjectList = () => {
                     <div key={project.id} className="col">
                         <div className="text-center p-3 border-round-sm bg-primary font-bold ">
 
-                            <Card key={project.id} title={project.name} subTitle={project.createDate} header = { <ImageByTopic topic={project.name} />} footer={projectFooter(project.id)} className="md:w-25rem">
+                            <Card
+                                key={project.id}
+                                title={project.name}
+                                subTitle={project.createDate}
+                                header={<ImageByTopic topic={project.name} />}
+                                footer={projectFooter(project.id)}
+                                className="md:w-25rem">
                                 <p className="m-0">
                                     {project.description}
                                 </p>

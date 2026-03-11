@@ -65,11 +65,11 @@ const sortTasksByPriorityAndDate = (tasks) => {
             <Button label="הוספת משימה" onClick={() => navigate(`/project/${id}/add-task`)} className="p-button-outlined p-button-success mb-3" />
             <div className="grid">
                 {statuses.map(status => (
-                    <div key={status} className="col">
-                        <Card title={status} className="md:w-25rem">
+                    <div key={status} className="col-3">
+                        <Card title={status} className="md:w-25rem p-mb-2">
                             {sortTasksByPriorityAndDate(filterTasksByStatus(status)).map(task => (
                                 <div key={task.id} className="p-3 border-round-sm bg-light text-center">
-                                    <Card title={task.title} className="md:w-25rem">
+                                    <Card title={task.title} className="md:w-25rem p-card p-p-2">
                                         <p>{task.description}</p>
                                         <p>עדיפות: {priorityOrder[task.priority - 1]}</p>
                                         <p>תאריך יעד: {task.dueDate}</p>
