@@ -1,5 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
+import 'primeicons/primeicons.css';
+
 
 const ImageByTopic = ({ topic }) => {
     const [imageUrl, setImageUrl] = useState('');
@@ -33,7 +35,10 @@ const ImageByTopic = ({ topic }) => {
                 src={imageUrl}
                 alt={topic}
                 style={{}}
-            /> : <p>Loading...</p>}
+            /> : <p  style={{  color: 'orange' }}>
+                    <i className="pi pi-spin pi-spinner"></i>
+                        Loading...
+                </p>}
         </div>
     );
 };

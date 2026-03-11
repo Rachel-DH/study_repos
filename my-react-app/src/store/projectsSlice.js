@@ -7,6 +7,7 @@ const project = {
 }
 
 const projectsSlice=createSlice({
+
     name:"projects",
     initialState:{ list: [] },
     reducers:{
@@ -33,6 +34,7 @@ const projectsSlice=createSlice({
         },
         remove:(state, action)=>{
             state.list = state.list.filter(project=>project.id!==action.payload)
+            // treat related tasks in taskSlice
         },
     }
 })

@@ -42,7 +42,7 @@ const taskSlice=createSlice({
             }
         },
         remove:(state, action)=>{
-             state.list = state.list.filter(task=>task.id!==action.payload)
+            state.list = state.list.filter(task=>task.id!==action.payload)
         },
         changeStatus:(state, action)=>{
              const currentTask=state.list.find(task=>task.id===action.payload.id)
