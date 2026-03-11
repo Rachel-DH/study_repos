@@ -33,7 +33,7 @@ export default function AddTask() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { id } = useParams();
-    const projectId = parseInt(id);
+    const projectId = id.toString();
     const priorityOptions = [
         { name: 'Low', value: 1 },
         { name: 'Medium', value: 2 },
@@ -47,7 +47,7 @@ export default function AddTask() {
             priority: data.priority,
             dueDate: data.dueDate ? data.dueDate.toLocaleDateString('he-IL') : null,
             idProject: projectId
-        })); navigate('/project/' + id);
+        })); navigate(`/project/${id}`);
 
 toast.current.show({
         severity: 'success',
@@ -57,7 +57,7 @@ toast.current.show({
     });
 
     setTimeout(() => {
-        navigate('/project/' + id);
+        navigate(`/project/${id}`);
     }, 1500);
 }
     const validateDate = (value) => {

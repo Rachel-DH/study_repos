@@ -11,7 +11,7 @@ import { useRef } from 'react';
 import { Toast } from 'primereact/toast';
 
 
-export default function Login() {
+const Login = () => {
     
   const {
     register,
@@ -99,3 +99,5 @@ export default function Login() {
    </>
   )
 }
+
+export default Login;
