@@ -4,6 +4,7 @@ import 'primeicons/primeicons.css';
 import { Card } from 'primereact/card';
 import { Button } from 'primereact/button';
 import { remove } from "../store/projectsSlice";
+import ImageByTopic from './ImageByTopic';
 
 const ProjectList = () => {
     const navigate = useNavigate();
@@ -41,7 +42,7 @@ const ProjectList = () => {
                     <div key={project.id} className="col">
                         <div className="text-center p-3 border-round-sm bg-primary font-bold ">
 
-                            <Card key={project.id} title={project.name} subTitle={project.createDate} footer={projectFooter(project.id)} className="md:w-25rem">
+                            <Card key={project.id} title={project.name} subTitle={project.createDate} header = { <ImageByTopic topic={project.name} />} footer={projectFooter(project.id)} className="md:w-25rem">
                                 <p className="m-0">
                                     {project.description}
                                 </p>
