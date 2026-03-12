@@ -5,7 +5,7 @@ import 'primeicons/primeicons.css';
 
 const ImageByTopic = ({ topic }) => {
     const [imageUrl, setImageUrl] = useState('');
-    const API_KEY = '0Af9gMrtNjtFehNmxsKmlIgfT7CK05vK7CNwRid7kL18wVqd1zim4CYA';
+    const API_KEY = 'MY_PEXELS_API_KEY';
     useEffect(() => {
         const fetchImage = async () => {
             try {
@@ -35,10 +35,10 @@ const ImageByTopic = ({ topic }) => {
                 src={imageUrl}
                 alt={topic}
                 style={{}}
-            /> : <p  style={{  color: 'orange' }}>
-                    <i className="pi pi-spin pi-spinner"></i>
-                        Loading...
-                </p>}
+            /> : <p style={{ color: 'orange' }}>
+                <i className="pi pi-spin pi-spinner"></i>
+                Loading...
+            </p>}
         </div>
     );
 };
