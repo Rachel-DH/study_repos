@@ -11,6 +11,17 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  --olive-leaf: #606c38;
+  --black-forest: #283618;
+  --cornsilk: #fefae0;
+  --sunlit-clay: #dda15e;
+  --copperwood: #bc6c25;
+    --primary-color: var(--olive-leaf);
+  --primary-color-text: var(--cornsilk);
+  --surface-ground: var(--cornsilk);
+  --surface-section: #ffffff;
+  --surface-card: #ffffff;
+  --text-color: var(--black-forest);
 }
 
 a {
