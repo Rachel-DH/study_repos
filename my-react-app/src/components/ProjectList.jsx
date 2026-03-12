@@ -62,34 +62,61 @@
 // }
 
 // export default ProjectList
-import React from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { Card } from 'primereact/card'
 import { Button } from 'primereact/button'
 import { remove } from "../store/projectsSlice"
+import { useState } from 'react'
+import { Calendar } from 'primereact/calendar';
+import { FloatLabel } from 'primereact/floatlabel';
+import { InputText } from 'primereact/inputtext';
 import ImageByTopic from './ImageByTopic'
+import { update } from '../store/projectsSlice'
+import 'primeicons/primeicons.css'
 
 const ProjectList = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const projects = useSelector((state) => state.projects.list)
-    const { editProjectId, setEditProjectId } = React.useState(null)
-    // עיצוב כותרת התמונה של הכרטיס
+    const [editProjectId, setEditProjectId] = useState(null)
+    const [updatedName, setUpdatedName] = useState('');
+    const [updatedDate, setUpdatedDate] = useState(null);
+    const [updatedDescription, setUpdatedDescription] = useState('');
+
     const cardHeader = (project) => (
         <div className="relative overflow-hidden" style={{ height: '160px', borderRadius: '12px 12px 0 0' }}>
             <ImageByTopic topic={project.name} />
-            {/* כפתור מחיקה עדין שצף על התמונה */}
-            <Button
-                icon="pi pi-trash"
-                className="p-button-rounded p-button-danger p-button-text absolute top-0 right-0 m-2 bg-white-alpha-20 hover:bg-white-alpha-40 transition-all"
-                onClick={(e) => { e.stopPropagation(); dispatch(remove(project.id)); }}
-                style={{ backdropFilter: 'blur(4px)', color: '#fefae0' }}
-            />
+            <div style={{ position: 'absolute', top: '10px', right: '10px', display: 'flex', flexDirection: 'column' }}>
+
+                <Button
+                    icon="pi pi-trash"
+                    className="p-button-rounded p-button-danger p-button-text absolute top-0 right-0 m-2 bg-white-alpha-20 hover:bg-white-alpha-40 transition-all"
+                    onClick={(e) => { e.stopPropagation(); dispatch(remove(project.id)); }}
+                    style={{ backdropFilter: 'blur(4px)', color: '#fefae0' }}
+                />
+
+                <Button
+                    icon="pi pi-pencil"
+                    className="p-button-rounded p-button-secondary p-button-text absolute top-0 right-10 m-2 bg-white-alpha-20 hover:bg-white-alpha-40 transition-all"
+                    onClick={(e) => { e.stopPropagation(); setEditProjectId(project.id); setUpdatedName(project.name); setUpdatedDate(project.createDate); setUpdatedDescription(project.description); }}
+                    style={{ backdropFilter: 'blur(4px)', color: '#fefae0' }}
+                />
+            </div>
         </div>
+
     );
 
-    const updateProject = (project_id) => ()
+    const handleUpdate = () => {
+        const formData = {
+            name: updatedName,
+            date: updatedDate,
+            description: updatedDescription,
+        };
+        dispatch(update({ id: editProjectId, ...formData }));
+        setEditProjectId(null);
+    };
+
     return (
         <div className="min-h-screen w-screen m-0 p-5 overflow-x-hidden"
             style={{
@@ -100,7 +127,6 @@ const ProjectList = () => {
                 direction: 'rtl'
             }}>
 
-            {/* Header עליון */}
             <div className="flex justify-content-between align-items-center mb-6 mt-4 px-4">
                 <div>
                     <h1 className="text-5xl font-black m-0" style={{ color: '#fefae0', letterSpacing: '-1px' }}>הפרויקטים שלי.</h1>
@@ -115,7 +141,6 @@ const ProjectList = () => {
                 />
             </div>
 
-            {/* גריד של פרויקטים */}
             <div className="grid px-2">
                 {projects.map((project) => (
                     editProjectId !== project.id ? (
@@ -142,11 +167,10 @@ const ProjectList = () => {
                                         {project.description || "אין תיאור זמין לפרויקט זה..."}
                                     </p>
 
-                                    {/* הכפתור המעודכן לפי הסגנון של דף ה-Login */}
                                     <div className="mt-4 flex justify-content-end">
                                         <Button
                                             label="הצגת הפרויקט"
-                                            icon="pi pi-arrow-left" // אייקון חץ שמאלה (מתאים ל-RTL)
+                                            icon="pi pi-arrow-left"
                                             iconPos="right"
                                             className="p-button-sm border-round-pill shadow-2 border-none px-4 py-2 transition-all hover:shadow-4"
                                             style={{
@@ -155,7 +179,7 @@ const ProjectList = () => {
                                                 fontSize: '0.9rem'
                                             }}
                                             onClick={(e) => {
-                                                e.stopPropagation(); // מונע כפל ניווט בגלל ה-onClick של הכרטיס
+                                                e.stopPropagation();
                                                 navigate(`/project/${project.id}`);
                                             }}
 
@@ -165,56 +189,70 @@ const ProjectList = () => {
                                 </div>
                             </Card>
                         </div>
-                    ) : ( <div key={project.id} className="col-12 md:col-6 lg:col-3 p-3">
-                            <Card
-                                header={cardHeader(project)}
-                                className="shadow-4 border-none transition-all hover:-translate-y-1"
-                                style={{
-                                    background: 'rgba(254, 250, 224, 0.08)',
-                                    backdropFilter: 'blur(12px)',
-                                    borderRadius: '12px',
-                                    border: '1px solid rgba(255, 255, 255, 0.1)',
-                                    color: '#fefae0'
-                                }}
-                                onClick={() => navigate(`/project/${project.id}`)}
-                            >
-                                <div className="flex flex-column gap-2 cursor-pointer">
-                                    <span className="text-2xl font-bold line-height-1" style={{ color: '#fefae0' }}>{project.name}</span>
-                                    <span className="text-xs opacity-60 uppercase tracking-widest" style={{ color: '#dda15e' }}>
-                                        <i className="pi pi-calendar ml-1 text-xs"></i> {project.createDate}
-                                    </span>
-                                    <p className="mt-3 text-sm line-height-3 opacity-80 h-3rem overflow-hidden text-overflow-ellipsis">
-                                        {project.description || "אין תיאור זמין לפרויקט זה..."}
-                                    </p>
+                    ) : (<div key={project.id} className="col-12 md:col-6 lg:col-3 p-3">
+                        <Card
+                            header={cardHeader(project)}
+                            className="shadow-4 border-none transition-all hover:-translate-y-1"
+                            style={{
+                                background: 'rgba(254, 250, 224, 0.08)',
+                                backdropFilter: 'blur(12px)',
+                                borderRadius: '12px',
+                                border: '1px solid rgba(255, 255, 255, 0.1)',
+                                color: '#fefae0'
+                            }}
+                        >
+                            <div className="flex flex-column gap-2 cursor-pointer">
+                                <FloatLabel label="שם" className="text-2xl font-bold line-height-1" style={{ color: '#fefae0' }}>
+                                    <InputText value={updatedName} onChange={(e) => setUpdatedName(e.target.value)} />
+                                    <label htmlFor="projectName" style={{ color: '#fefae0', opacity: 0.7 }}>שם פרויקט</label>
+                                </FloatLabel>
+                                <FloatLabel label="תאריך" className="text-xs opacity-60 uppercase tracking-widest" style={{ color: '#dda15e' }}>
+                                    <Calendar
+                                        className="pi pi-calendar ml-1 text-xs"
+                                        value={updatedDate}
+                                        onChange={(e) => setUpdatedDate(e.value)}
+                                        showIcon
+                                        dateFormat="dd/mm/yy"
+                                        maxDate={new Date()}
+                                        style={{ width: '100%' }}
+                                        placeholder="בחר תאריך (אופציונלי)"
+                                    />
+                                    <label htmlFor="createDate" style={{ color: '#fefae0', opacity: 0.7 }}>תאריך יצירה</label>
+                                </FloatLabel>
 
-                                    {/* הכפתור המעודכן לפי הסגנון של דף ה-Login */}
-                                    <div className="mt-4 flex justify-content-end">
-                                        <Button
-                                            label="שמירה"
-                                            icon="pi pi-save" 
-                                            iconPos="right"
-                                            className="p-button-sm border-round-pill shadow-2 border-none px-4 py-2 transition-all hover:shadow-4"
-                                            style={{
-                                                backgroundColor: '#bc6c25',
-                                                color: '#fefae0',
-                                                fontSize: '0.9rem'
-                                            }}
-                                            onClick={(e) => {
-                                                e.stopPropagation(); 
-                                                handleUpdate();
-                                            }}
+                                <FloatLabel label="תיאור" className="mt-3 text-sm line-height-3 opacity-80 h-3rem overflow-hidden text-overflow-ellipsis">
+                                    <InputText value={updatedDescription} onChange={(e) => setUpdatedDescription(e.target.value)} />
+                                    <label htmlFor="description" style={{ color: '#fefae0', opacity: 0.7 }}>תיאור קצר</label>
 
-                                        />
+                                </FloatLabel>
 
-                                    </div>
+
+                                <div className="mt-4 flex justify-content-end">
+                                    <Button
+                                        label="שמירה"
+                                        icon="pi pi-save"
+                                        iconPos="right"
+                                        className="p-button-sm border-round-pill shadow-2 border-none px-4 py-2 transition-all hover:shadow-4"
+                                        style={{
+                                            backgroundColor: '#bc6c25',
+                                            color: '#fefae0',
+                                            fontSize: '0.9rem'
+                                        }}
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            handleUpdate();
+                                        }}
+
+                                    />
+
                                 </div>
-                            </Card>
-                        </div>)
+                            </div>
+                        </Card>
+                    </div>)
 
                 ))}
             </div>
 
-            {/* הודעה כשאין פרויקטים */}
             {projects.length === 0 && (
                 <div className="flex flex-column align-items-center justify-content-center mt-8 py-8 fadein animation-duration-1000">
                     <i className="pi pi-folder-open text-8xl mb-4 opacity-20" style={{ color: '#fefae0' }}></i>
@@ -222,7 +260,6 @@ const ProjectList = () => {
                 </div>
             )}
 
-            {/* עיצוב פנימי לשיפור ה-Card של PrimeReact */}
             <style>{`
                 .p-card {
                     color: #fefae0 !important;
